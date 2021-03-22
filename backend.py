@@ -5,22 +5,36 @@ from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     return 'Index Page'
 
+
 @app.route('/api/article/')
-def hello():
-    articles = [ 1,2,3,4,5,6,7,8,9,10 ]
+def get_last_10_articles():
+    articles = []
+    conn = psycopg2.connect(dbname='postgres', user='rust',
+                            password='rust', host='localhost')
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    cursor.execute(
+        "select id from articles order by id desc limit 10;"
+    )
+    row = cursor.fetchall()
+    for r in row:
+        articles.append(r['id'])
     return {
         "articles": articles
     }
 
 # GET
+
+
 @app.route('/api/article/<int:art_id>', methods=['GET'])
-def get_article_by_id( art_id ):
-    conn = psycopg2.connect(dbname='rust_test', user='rust', 
-                        password='rust', host='localhost')
+def get_article_by_id(art_id):
+    conn = psycopg2.connect(dbname='postgres', user='rust',
+                            password='rust', host='localhost')
     cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute(
@@ -30,24 +44,66 @@ def get_article_by_id( art_id ):
     return row[0]
 
 # PUT
+
+
 @app.route('/api/article/', methods=['PUT'])
 def create_new_article():
     for line in request.form:
-        print( line )
+        print(line)
 
-    # conn = psycopg2.connect(dbname='rust_test', user='rust', 
-    #                 password='rust', host='localhost')
-    # cursor = conn.cursor(cursor_factory=RealDictCursor)
+    conn = psycopg2.connect(dbname='postgres', user='rust',
+                            password='rust', host='localhost')
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
 
-    # cursor.execute(
-    #     "INSERT INTO articles (id, head, body) VALUES ({}, {}, {} );".format(request.form['id'],request.form['head'],request.form['body'] )
-    # )
+    cursor.execute(
+        "INSERT INTO articles (head, body) VALUES ('{}', '{}');".format(
+            request.form['head'], request.form['body'])
+    )
+    cursor.close()
+    conn.commit()
     return {
         "status": True
     }
 
 
-
-# TODO:
-# POST
 # DELETE
+
+
+@app.route('/api/article/<int:art_id>', methods=['DELETE'])
+def del_article_by_id(art_id):
+    conn = psycopg2.connect(dbname='postgres', user='rust',
+                            password='rust', host='localhost')
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    cursor.execute(
+        "DELETE FROM articles WHERE id = {};".format(art_id)
+    )
+    cursor.close()
+    conn.commit()
+    return {
+        "status": True
+    }
+
+
+# POST
+
+
+@app.route('/api/article/', methods=['POST'])
+def update_article():
+    for line in request.form:
+        print(line)
+
+    conn = psycopg2.connect(dbname='postgres', user='rust',
+                            password='rust', host='localhost')
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    cursor.execute(
+        "UPDATE articles SET head = '{}', body = '{}' where id = {};".format(
+            request.form['head'], request.form['body'], int(request.form['id']))
+    )
+    cursor.close()
+    conn.commit()
+    return {
+        "status": True
+    }
+
