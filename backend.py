@@ -4,6 +4,7 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from psycopg2.pool import SimpleConnectionPool
 from contextlib import contextmanager
+import json
 
 app = Flask(__name__)
 
@@ -74,11 +75,13 @@ def get_article_by_id(art_id):
 def create_new_article():
     result = True
     err = ""
+    print (request.json)
+    #data=json.loads(request.json)
     with db() as (connection, cursor):
         try:
             cursor.execute(
                 "INSERT INTO articles (head, body) VALUES ('{}', '{}');".format(
-                    request.form['head'], request.form['body'])
+                    request.json['head'], request.json['body'])
             )
             connection.commit()
         except psycopg2.Error as error:
