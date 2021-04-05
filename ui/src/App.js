@@ -8,6 +8,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import ArticleAdminView from './ArticleAdminView';
 
 
 function App() {
@@ -22,6 +23,9 @@ function App() {
           <Switch>
             <Route path="/create_article">
               <ArticleCreator />
+            </Route>
+            <Route path="/admin">
+              <ArticleAdminView />
             </Route>
             <Route path="/">
               <div className="col d-flex justify-content-center">

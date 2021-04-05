@@ -11,6 +11,7 @@ function MyNavbar() {
             <Nav className="mr-auto">
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/create_article">Create Article</Nav.Link>
+                <Nav.Link href="/admin">Admin</Nav.Link>
             </Nav>
             <Form inline>
                 <FormControl type="text" placeholder="Search" className="mr-sm-2" />
