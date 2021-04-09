@@ -18,22 +18,24 @@ class ArticleAdminView extends React.Component {
     componentDidMount() {
         this.loadArticles()
     }
-    
+
     reloadHandler() {
         this.loadArticles()
         console.log('reloadHandler')
     }
-    
+
     loadArticles() {
         console.log('loadArticles')
         fetch("/api/article/")
             .then(res => res.json())
             .then(
                 (result) => {
+                    this.setState({articles:[]})
                     this.setState({
                         isLoaded: true,
                         articles: result.articles
                     });
+                    console.log(this.state)
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
@@ -46,12 +48,12 @@ class ArticleAdminView extends React.Component {
                 }
             )
     }
-    
+
     render() {
-        const { error, isLoaded, articles } = this.state;
-        if (error) {
-            return <div>Error: {error.message}</div>;
-        } else if (!isLoaded) {
+        console.log('render')
+        if (this.state.error) {
+            return <div>Error: {this.state.error.message}</div>;
+        } else if (!this.state.isLoaded) {
             return <div>Loading...</div>;
         } else {
             return (
@@ -65,8 +67,8 @@ class ArticleAdminView extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {articles.map(article => (
-                            <ArticleAdminViewRow id={article} handler={this.reloadHandler}></ArticleAdminViewRow>
+                        {this.state.articles.map(article => (
+                            <ArticleAdminViewRow id={article} handler={this.loadArticles}></ArticleAdminViewRow>
                         ))}
                     </tbody>
                 </Table>
