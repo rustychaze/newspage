@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
 import React, { Component } from 'react';
+import ArticleEditor from './ArticleEditor';
 
 
 class ArticleAdminViewRow extends React.Component {
@@ -73,7 +74,7 @@ class ArticleAdminViewRow extends React.Component {
                 <tr>
                     <td>{article_body.id}</td>
                     <td>{article_body.head}</td>
-                    <td><Button variant="outline-primary">Edit</Button></td>
+                    <td><ArticleEditor id={article_body.id} handler={this.props.handler}/></td>
                     <td><Button variant="outline-primary" onClick={this.deleteArticle}>Delete</Button></td>
                 </tr>
             );

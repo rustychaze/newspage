@@ -137,7 +137,7 @@ def update_article():
         try:
             cursor.execute(
                 "UPDATE articles SET head = '{}', body = '{}' where id = {};".format(
-                    request.form['head'], request.form['body'], int(request.form['id']))
+                    request.json['head'], request.json['body'], int(request.json['id']))
             )
             connection.commit()
         except psycopg2.Error as error:
