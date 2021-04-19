@@ -5,8 +5,7 @@ import ArticleCreator from './ArticleCreator'
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import ArticleAdminView from './ArticleAdminView';
 

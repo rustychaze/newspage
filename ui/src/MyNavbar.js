@@ -6,8 +6,7 @@ import FormControl from 'react-bootstrap/FormControl';
 
 function MyNavbar() {
     return (
-        <Navbar bg="light" variant="light">
-            <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+        <Navbar bg="dark" variant="dark">
             <Nav className="mr-auto">
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/create_article">Create Article</Nav.Link>
@@ -15,7 +14,7 @@ function MyNavbar() {
             </Nav>
             <Form inline>
                 <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                <Button variant="outline-primary">Search</Button>
+                <Button variant="outline-info">Search</Button>
             </Form>
         </Navbar>
     );

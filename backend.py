@@ -136,8 +136,7 @@ def update_article():
     with db() as (connection, cursor):
         try:
             cursor.execute(
-                "UPDATE articles SET head = '{}', body = '{}' where id = {};".format(
-                    request.json['head'], request.json['body'], int(request.json['id']))
+                "UPDATE articles SET head = %s, body = %s where id = %s;", (request.json['head'], request.json['body'], int(request.json['id']))
             )
             connection.commit()
         except psycopg2.Error as error:

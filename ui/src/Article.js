@@ -51,7 +51,7 @@ class Article extends React.Component {
                 <Card style={{ width: '90%' }}>
                     <Card.Body>
                         <Card.Title>{article_body.head}</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                        <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
                         <Card.Text>
                             {article_body.body}
                         </Card.Text>
