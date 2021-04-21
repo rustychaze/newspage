@@ -1,9 +1,12 @@
-import Card from 'react-bootstrap/Card';
+import Card from 'react-bootstrap/Card'; import CardDeck from 'react-bootstrap/CardDeck';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Column from 'react-bootstrap/Container';
+import React, { Component } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import FormControl from 'react-bootstrap/FormControl';
-import React, { Component } from 'react';
 
 
 class Article extends React.Component {
@@ -19,7 +22,7 @@ class Article extends React.Component {
     }
 
     componentDidMount() {
-        fetch("/api/article/"+this.state.article_id)
+        fetch("/api/article/" + this.state.article_id)
             .then(res => res.json())
             .then(
                 (result) => {
@@ -48,17 +51,20 @@ class Article extends React.Component {
             return <div>Loading...</div>;
         } else {
             return (
-                <Card style={{ width: '90%' }}>
-                    <Card.Body>
-                        <Card.Title>{article_body.head}</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted"></Card.Subtitle>
-                        <Card.Text>
-                            {article_body.body}
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
+                <Container>
+                    <Row>
+                        <Column md={{ span: 8, offset: 2 }} >
+                            <Card border="info">
+                                <Card.Body>
+                                    <Card.Title>{article_body.head}</Card.Title>
+                                    <Card.Text>{article_body.body}</Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Column>
+                    </Row>
+                </Container>
             );
-        
+
         }
     }
 }

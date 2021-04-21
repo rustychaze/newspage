@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Article from './Article';
+import './index.css';
 
 class ArticleList extends React.Component {
     constructor(props) {

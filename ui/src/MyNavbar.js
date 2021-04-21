@@ -6,16 +6,19 @@ import FormControl from 'react-bootstrap/FormControl';
 
 function MyNavbar() {
     return (
-        <Navbar bg="dark" variant="dark">
-            <Nav className="mr-auto">
-                <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="/create_article">Create Article</Nav.Link>
-                <Nav.Link href="/admin">Admin</Nav.Link>
-            </Nav>
-            <Form inline>
-                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                <Button variant="outline-info">Search</Button>
-            </Form>
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="mr-auto">
+                    <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/create_article">Create Article</Nav.Link>
+                    <Nav.Link href="/admin">Admin</Nav.Link>
+                </Nav>
+                <Form inline>
+                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                    <Button variant="outline-info">Search</Button>
+                </Form>
+            </Navbar.Collapse>
         </Navbar>
     );
 }
