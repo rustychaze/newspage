@@ -29,6 +29,7 @@ def db():
 def index():
     return 'Index Page'
 
+#GET 10 articles
 
 @app.route('/api/article/')
 def get_last_10_articles():
@@ -36,7 +37,10 @@ def get_last_10_articles():
     with db() as (connection, cursor):
         try:
             cursor.execute(
-                "select id from articles order by id desc limit 10;"
+                "SELECT COUNT(*) FROM articles;"
+            )
+            cursor.execute(
+                "SELECT id FROM articles ORDER by id desc limit 10;"
             )
             row = cursor.fetchall()
             for r in row:
