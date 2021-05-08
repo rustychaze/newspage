@@ -25,52 +25,56 @@ def db():
         db_pool.putconn(con)
 
 
+# GET
+
 @app.route('/')
 def index():
     return 'Index Page'
 
-#GET 10 articles
+@app.route('/api/article/pages/<int:page>', methods=['GET'])
+def get_page(page):
+    return get_page_common(page)
 
-@app.route('/api/article/')
-def get_last_10_articles():
+@app.route('/api/article/', methods=['GET'])
+def get_main_page():
+    return get_page_common(1)
+
+def get_page_common(page):
     articles = []
+    error = ""
     with db() as (connection, cursor):
         try:
             cursor.execute(
                 "SELECT COUNT(*) FROM articles;"
             )
+            result = cursor.fetchone()
+            count = result['count']
+            pages = count%10
+            pages += 1  
+            if (page < 1) or (page > pages):
+                raise Exception ('page number has to be >= 1 and not exceed total number of pages')       
+            offset = (page-1)*10
+            if page < 1 or None:
+                raise Exception ('number must be not less than 1')
             cursor.execute(
-                "SELECT id FROM articles ORDER by id desc limit 10;"
+                "SELECT id, head, body FROM articles ORDER BY id desc LIMIT 10 OFFSET {};".format(offset)
             )
             row = cursor.fetchall()
             for r in row:
-                articles.append(r['id'])
-        except psycopg2.Error as error:
-            print('Database error:', error)
+                articles.append({'id': r['id'], 'head': r['head'], 'body': r['body']})
+        except psycopg2.Error as db_error:
+            error = db_error
+            print('Database error:', db_error)
         except Exception as ex:
+            error = ex
             print('General error:', ex)
     return {
-        "articles": articles
+        "articles": articles,
+        "current_page": page,
+        "pages": pages,
+        "error": error
     }
 
-# GET
-
-
-@app.route('/api/article/<int:art_id>', methods=['GET'])
-def get_article_by_id(art_id):
-    result = {}
-    with db() as (connection, cursor):
-        try:
-            cursor.execute(
-                "SELECT * FROM articles WHERE id = {};".format(art_id)
-            )
-            row = cursor.fetchall()
-            result = row[0]
-        except psycopg2.Error as error:
-            print('Database error:', error)
-        except Exception as ex:
-            print('General error:', ex)
-    return result
 
 # PUT
 
