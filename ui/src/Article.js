@@ -14,50 +14,20 @@ class Article extends React.Component {
         super(props);
         console.log(this.props)
         this.state = {
-            error: null,
-            isLoaded: false,
-            article_id: this.props.id,
-            article_body: null
+            article: this.props.article
         };
     }
 
-    componentDidMount() {
-        fetch("/api/article/" + this.state.article_id)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        article_body: result
-                    });
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
-    }
-
     render() {
-        const { error, isLoaded, article_body } = this.state;
-        if (error) {
-            return <div>Error: {error.message}</div>;
-        } else if (!isLoaded) {
-            return <div>Loading...</div>;
-        } else {
+        const article = this.state.article;
             return (
                 <Container>
                     <Row>
                         <Column md={{ span: 8, offset: 2 }} >
                             <Card border="info">
                                 <Card.Body>
-                                    <Card.Title>{article_body.head}</Card.Title>
-                                    <Card.Text>{article_body.body}</Card.Text>
+                                    <Card.Title>{article.head}</Card.Title>
+                                    <Card.Text>{article.body}</Card.Text>
                                 </Card.Body>
                             </Card>
                         </Column>
@@ -65,7 +35,6 @@ class Article extends React.Component {
                 </Container>
             );
 
-        }
     }
 }
 
