@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Article from './Article';
+import Paginator from './Pagination';
 import './index.css';
+import { useParams } from 'react-router-dom';
 
 class ArticleList extends React.Component {
     constructor(props) {
@@ -8,7 +10,9 @@ class ArticleList extends React.Component {
         this.state = {
             error: null,
             isLoaded: false,
-            articles: []
+            articles: [],
+            pages: this.props.pages,
+            current_page: this.props.current_page
         };
     }
 
@@ -19,12 +23,11 @@ class ArticleList extends React.Component {
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        articles: result.articles
+                        articles: result.articles,
+                        pages: result.pages,
+                        current_page: result.current_page
                     });
                 },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
                 (error) => {
                     this.setState({
                         isLoaded: true,
@@ -35,7 +38,7 @@ class ArticleList extends React.Component {
     }
 
     render() {
-        const { error, isLoaded, articles } = this.state;
+        const { error, isLoaded, articles, pages, current_page } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -45,10 +48,12 @@ class ArticleList extends React.Component {
                 <div>
                     {articles.map(article => (
                         <div>
-                            <Article article={article}></Article>
+                            <Article key={articles.id} article={article}></Article>
                             <br />
                         </div>
                     ))}
+                    <Paginator pages={pages} current_page={current_page} commonUrl="/article/page/" />
+
                 </div>
             );
         }
