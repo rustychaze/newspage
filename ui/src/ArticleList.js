@@ -14,6 +14,13 @@ class ArticleList extends React.Component {
             pages: this.props.pages,
             current_page: this.props.current_page
         };
+    
+        let { id } = useParams();
+        return (
+            <Route>
+                
+            </Route> 
+        )
     }
 
     componentDidMount() {
@@ -36,6 +43,7 @@ class ArticleList extends React.Component {
                 }
             )
     }
+
 
     render() {
         const { error, isLoaded, articles, pages, current_page } = this.state;
